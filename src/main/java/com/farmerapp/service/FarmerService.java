@@ -297,9 +297,17 @@ public class FarmerService{
            	        throw new AccountDeactivatedException("Account is deactivated. Please contact support.");
            	    }
 
-        farmer.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        farmerRepository.save(farmer);
-        otpRepository.delete(dbOtp);
+                String encodedPassword = passwordEncoder.encode(request.getNewPassword());
+                farmerRepository.updatePasswordByEmail(email, encodedPassword);
+                otpRepository.delete(dbOtp);
+
+//                System.out.println("Updating Farmer password for email: " + email);
+//                System.out.println("New password (raw): " + request.getNewPassword());
+//                System.out.println("New password (encoded): " + encodedPassword);
+
+//        farmer.setPassword(passwordEncoder.encode(request.getNewPassword()));
+//        farmerRepository.save(farmer);
+//        otpRepository.delete(dbOtp);
         
         return ApiResponse.builder().message("Password reset  successfully ").response(email).build();
 				}else

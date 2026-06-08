@@ -30,4 +30,9 @@ public interface FarmerRepository extends JpaRepository<Farmer, Long>,JpaSpecifi
 	@Query("UPDATE Farmer f SET f.status = :status WHERE f.id = :id")
 	int updateStatusById(@Param("id") Long id, @Param("status") boolean status);
 
+	@Modifying
+	@Transactional
+	@Query("UPDATE Farmer f SET f.password = :password WHERE f.email = :email")
+	int updatePasswordByEmail(@Param("email") String email, @Param("password") String password);
+
 }

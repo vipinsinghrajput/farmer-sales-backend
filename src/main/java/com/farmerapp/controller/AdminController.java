@@ -27,7 +27,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/admin")
 @Validated

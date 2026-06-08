@@ -23,6 +23,7 @@ import com.farmerapp.handler.CustomAccessDeniedHandler;
 import com.farmerapp.handler.CustomAuthenticationEntryPoint;
 import com.farmerapp.security.CustomUserDetailsService;
 import com.farmerapp.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +33,8 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter authenticationFilter;
 	
-	
+	@Value("${cors.allowed-origin:http://localhost:4200}")
+	private String allowedOrigin;
 	
 	 @Bean
 	    public AccessDeniedHandler accessDeniedHandler() {
@@ -63,7 +65,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	System.out.println("hellovipin");
         http.csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
                 .authorizeHttpRequests(requests ->  requests
                
@@ -110,7 +111,7 @@ public class SecurityConfig {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
+                .allowedOrigins(allowedOrigin)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
