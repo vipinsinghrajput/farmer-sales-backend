@@ -154,9 +154,11 @@ public class CustomHandler{
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put("message", error.getDefaultMessage());
-        });
+        String combinedMessage = ex.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + " (" + error.getDefaultMessage() + ")")
+            .collect(Collectors.joining(", "));
+
+        errors.put("message", "Validation failed: " + combinedMessage);
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
