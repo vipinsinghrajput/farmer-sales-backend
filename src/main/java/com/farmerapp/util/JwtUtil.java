@@ -8,7 +8,10 @@ import com.farmerapp.exception.ExpiredTokenException;
 import com.farmerapp.response.ApiResponse;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
@@ -50,8 +53,10 @@ public class JwtUtil {
 		private Claims getClaims(String token) {
 			try {
 				return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
-			} catch (ExpiredTokenException e) {
-				throw new ExpiredTokenException("Token Expired");
+			} catch (ExpiredJwtException e) {
+				throw new ExpiredTokenException("Session expired. Please login again.");
+			} catch (SignatureException | MalformedJwtException | IllegalArgumentException e) {
+				throw new ExpiredTokenException("Invalid session token. Please login again.");
 			}
 		} 
 
