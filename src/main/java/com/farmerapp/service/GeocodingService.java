@@ -72,7 +72,8 @@ public class GeocodingService {
         }
 
         if (latLon == null || latLon.length < 2) {
-            throw new EmptyOrNullFoundlException("❌ Could not fetch coordinates. Please check the address.");
+            System.err.println("❌ Could not fetch coordinates. Defaulting to 0.0, 0.0");
+            return new double[] { 0.0, 0.0 };
         }
 
         return latLon;
