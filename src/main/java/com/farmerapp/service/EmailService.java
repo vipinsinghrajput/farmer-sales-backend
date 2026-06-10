@@ -30,7 +30,11 @@ public class EmailService {
 		message.setSubject("Your OTP Code");
 		message.setText("Your OTP is: " + otp + ". It will expire in 2 minutes.");
 
-		mailSender.send(message);
+		try {
+			mailSender.send(message);
+		} catch (Exception e) {
+			System.err.println("Failed to send email to " + toEmail + ": " + e.getMessage());
+		}
 
 		LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(2); // OTP valid for 2 minutes
 
